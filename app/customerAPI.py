@@ -6,7 +6,6 @@ import helper_functions
 customer_api = Blueprint('customer_api', __name__)
 
 
-@customer_api.route("/customer", methods=['POST'])
 @customer_api.route("/customer/", methods=['POST'])
 def create_customer():
     data = request.get_json()
