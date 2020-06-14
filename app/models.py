@@ -27,10 +27,10 @@ class Customer(db.Model):
     last_name = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(60), nullable=False)
-    addressLine1 = db.Column(db.String(32), nullable=False)
+    addressLine1 = db.Column(db.String(32), nullable=True)
     addressLine2 = db.Column(db.String(32), nullable=True)
-    city = db.Column(db.String(32), nullable=False)
-    district = db.Column(db.String(32), nullable=False)
+    city = db.Column(db.String(32), nullable=True)
+    district = db.Column(db.String(32), nullable=True)
     country = db.Column(db.String(32), nullable=False)
 
     def create(self, email):
