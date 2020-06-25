@@ -25,10 +25,13 @@ def create_customer():
 def login():
     data = request.get_json()
     print(data['email'])
-    customer_email = Customer.query.filter_by(email=data['email']).first()
-    if customer_email is None:
-        return jsonify({'message': 'Customer Not found'})
-    return make_response(jsonify({'message': 'Not yet implemented'}), 300)
+    customer = Customer.query.filter_by(email=data['email']).first()
+    if customer is None:
+        return make_response(jsonify({'message': 'Customer Not found'}), 401)
+    elif bcrypt.checkpw(data['password'].encode('utf-8'), customer.password.encode('utf-8')):
+        return make_response(jsonify({'message': 'Login Validated'}, 200))
+
+    return make_response(jsonify({'message': 'Other error'}), 404)
 
 
 @customer_api.route('/customer/id/<public_id>', methods=['GET'])
