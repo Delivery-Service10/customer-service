@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from models import db, Customer
 import bcrypt
 import helper_functions
+import json
 
 customer_api = Blueprint('customer_api', __name__)
 
@@ -18,6 +19,16 @@ def create_customer():
     db.session.add(new_customer)
     db.session.commit()
     return jsonify({'message': 'New  Customer created!'})
+
+
+@customer_api.route("/login/", methods=['POST'])
+def login():
+    data = request.get_json()
+    print(data['email'])
+    customer_email = Customer.query.filter_by(email=data['email']).first()
+    if customer_email is None:
+        return jsonify({'message': 'Customer Not found'})
+    return make_response(jsonify({'message': 'Not yet implemented'}), 300)
 
 
 @customer_api.route('/customer/id/<public_id>', methods=['GET'])
