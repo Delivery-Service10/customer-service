@@ -1,8 +1,10 @@
-from flask import Blueprint, request, jsonify, make_response
-from models import db, Customer
 import bcrypt
+from flask import Blueprint, request, jsonify, make_response
 import helper_functions
-import json
+import jwt
+import datetime
+
+from models import db, Customer
 
 customer_api = Blueprint('customer_api', __name__)
 
@@ -29,7 +31,8 @@ def login():
     if customer is None:
         return make_response(jsonify({'message': 'Customer Not found'}), 401)
     elif bcrypt.checkpw(data['password'].encode('utf-8'), customer.password.encode('utf-8')):
-        return make_response(jsonify({'message': 'Login Validated'}, 200))
+        return make_response(jsonify({'message': 'Login Validated',
+                                      'public_id': customer.public_id}, 200))
 
     return make_response(jsonify({'message': 'Other error'}), 404)
 
@@ -48,7 +51,6 @@ def get_one_customer(public_id):
 @customer_api.route('/customer', methods=['GET'])
 @customer_api.route('/customer/', methods=['GET'])
 def get_all_customers():
-
     customers = Customer.query.all()
     return jsonify({'customers': helper_functions.combine_results(customers)})
 
@@ -56,7 +58,6 @@ def get_all_customers():
 @customer_api.route('/customer/keyword/<keyword>', methods=['GET'])
 @customer_api.route('/customer/keyword/<keyword>/', methods=['GET'])
 def get_specified_customers(keyword):
-
     customers = Customer.query.filter(Customer.last_name.like("%" + keyword + "%"))
     return jsonify({'customers': helper_functions.combine_results(customers)})
 
@@ -76,6 +77,3 @@ def delete_store(public_id):
 @customer_api.route("/")
 def hello():
     return "Welcome to the customer_service_api"
-
-
-

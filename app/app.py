@@ -17,7 +17,6 @@ models.init_app(app)
 models.create_tables(app)
 app.register_blueprint(customer_api)
 
-
 @app.route('/')
 def hello_world():
     return 'Welcome to the Customer_API'
