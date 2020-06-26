@@ -1,8 +1,7 @@
 import bcrypt
 from flask import Blueprint, request, jsonify, make_response
 import helper_functions
-import jwt
-import datetime
+
 
 from models import db, Customer
 
@@ -26,10 +25,12 @@ def create_customer():
 @customer_api.route("/login/", methods=['POST'])
 def login():
     data = request.get_json()
-    print(data['email'])
     customer = Customer.query.filter_by(email=data['email']).first()
     if customer is None:
         return make_response(jsonify({'message': 'Customer Not found'}), 401)
+
+    elif not bcrypt.checkpw(data['password'].encode('utf-8'), customer.password.encode('utf-8')):
+        return make_response(jsonify({'message': 'Incorrect password  '}), 401)
     elif bcrypt.checkpw(data['password'].encode('utf-8'), customer.password.encode('utf-8')):
         return make_response(jsonify({'message': 'Login Validated',
                                       'public_id': customer.public_id}, 200))
