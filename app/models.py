@@ -31,7 +31,7 @@ class Customer(db.Model):
     addressLine2 = db.Column(db.String(32), nullable=True)
     city = db.Column(db.String(32), nullable=True)
     district = db.Column(db.String(32), nullable=True)
-    country = db.Column(db.String(32), nullable=False)
+    country = db.Column(db.String(32), nullable=True)
 
     def create(self, email):
         self.email = email

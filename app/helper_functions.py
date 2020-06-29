@@ -14,8 +14,8 @@ def populate_customer(data, hashed_password):
                             first_name=data['first_name'],
                             last_name=data['last_name'],
                             email=data['email'],
-                            password=hashed_password,
-                            country=data['country']
+                            password=hashed_password
+                            # country=data['country']
                       )
     return new_customer
 
