@@ -11,7 +11,6 @@ customer_api = Blueprint('customer_api', __name__)
 @customer_api.route("/customer/", methods=['POST'])
 def create_customer():
     data = request.get_json()
-    print(data)
     customer_email = Customer.query.filter_by(email=data['email']).first()
     if customer_email is not None:
        return jsonify({'message': 'Customer email already exists'})
