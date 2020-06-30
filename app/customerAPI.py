@@ -33,7 +33,8 @@ def login():
         return make_response(jsonify({'message': 'Incorrect password  '}), 401)
     elif bcrypt.checkpw(data['password'].encode('utf-8'), customer.password.encode('utf-8')):
         return make_response(jsonify({'message': 'Login Validated',
-                                      'public_id': customer.public_id}, 200))
+                                      'public_id': customer.public_id,
+                                      'Name': customer.first_name + " " + customer.last_name}, 200))
 
     return make_response(jsonify({'message': 'Other error'}), 404)
 
