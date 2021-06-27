@@ -10,6 +10,17 @@ customer_api = Blueprint('customer_api', __name__)
 
 @customer_api.route("/customer/", methods=['POST'])
 def create_customer():
+    '''
+    POST
+    http://127.0.0.1:5001/customer/
+{
+    "first_name":"John", 
+    "last_name":"John",
+    "password": "pass",
+    "email":"random@email.com"
+}
+
+    '''
     data = request.get_json()
     customer_email = Customer.query.filter_by(email=data['email']).first()
     if customer_email is not None:
@@ -24,6 +35,14 @@ def create_customer():
 
 @customer_api.route("/login/", methods=['POST'])
 def login():
+    '''
+    POST
+    http://127.0.0.1:5001/login/
+{
+    "email":"random@email.com",
+    "password": "pass"
+}
+    '''
     data = request.get_json()
     customer = Customer.query.filter_by(email=data['email']).first()
     if customer is None:
@@ -42,6 +61,10 @@ def login():
 @customer_api.route('/customer/id/<public_id>', methods=['GET'])
 @customer_api.route('/customer/id/<public_id>/', methods=['GET'])
 def get_one_customer(public_id):
+    '''
+    GET
+    http://127.0.0.1:5001/customer/id/<public_id>/
+    '''
     customer = Customer.query.filter_by(public_id=public_id).first()
     if not customer:
         return jsonify({'message': ' No customer found'})
@@ -53,6 +76,10 @@ def get_one_customer(public_id):
 @customer_api.route('/customer', methods=['GET'])
 @customer_api.route('/customer/', methods=['GET'])
 def get_all_customers():
+    '''
+    GET
+    http://127.0.0.1:5001/customer/
+    '''
     customers = Customer.query.all()
     return jsonify({'customers': helper_functions.combine_results(customers)})
 
@@ -66,7 +93,12 @@ def get_specified_customers(keyword):
 
 @customer_api.route('/customer/<public_id>', methods=['DELETE'])
 @customer_api.route('/customer/<public_id>/', methods=['DELETE'])
-def delete_store(public_id):
+def delete_customer(public_id):
+    '''
+    DELETE
+    http://127.0.0.1:5001/customer/<public_id>/
+    '''
+
     customer = Customer.query.filter_by(public_id=public_id).first()
     if not customer:
         return jsonify({'message': 'Customer not found'})
